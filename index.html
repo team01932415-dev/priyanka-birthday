@@ -24,43 +24,62 @@ body{
     width:100%;
     height:100%;
     object-fit:cover;
-    z-index:-2;
+    z-index:-3;
 }
 
-/* Soft dark overlay on video */
+/* Soft dark overlay */
 .video-overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.35); /* softness control */
-    z-index:-1;
+    background:rgba(0,0,0,0.4);
+    z-index:-2;
 }
 
-/* Glassmorphism content box */
+/* Glass box with slow parallax zoom */
 .box{
     position:relative;
     padding:30px;
     width:340px;
     border-radius:18px;
 
-    /* glass look */
     background:
       linear-gradient(
-        rgba(255,255,255,0.35),
-        rgba(255,255,255,0.35)
+        rgba(255,255,255,0.4),
+        rgba(255,255,255,0.4)
       ),
       url("card-bg.jpg");
-    background-size:cover;
+    background-size:110%;
     background-position:center;
 
-    backdrop-filter: blur(10px) saturate(120%);
-    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
 
     border:1px solid rgba(255,255,255,0.35);
     box-shadow:0 25px 55px rgba(0,0,0,0.45);
+
+    animation:slowZoom 18s ease-in-out infinite alternate;
     z-index:1;
 }
 
-h1{color:#ff3b6f;}
+/* Heartbeat title */
+h1{
+    color:#ff3b6f;
+    animation:heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat{
+    0%,100%{transform:scale(1);}
+    14%{transform:scale(1.08);}
+    28%{transform:scale(1);}
+    42%{transform:scale(1.08);}
+    70%{transform:scale(1);}
+}
+
+/* Parallax zoom */
+@keyframes slowZoom{
+    from{background-size:110%;}
+    to{background-size:125%;}
+}
 
 #locked,#secret{
     display:none;
@@ -115,7 +134,7 @@ audio{
   <source src="VID_20251218_101551_080 (1).mp4" type="video/mp4">
 </video>
 
-<!-- Dark Overlay -->
+<!-- Overlay -->
 <div class="video-overlay"></div>
 
 <!-- Content -->
@@ -157,7 +176,7 @@ const now=new Date();
 const unlockTime=new Date();
 unlockTime.setHours(24,0,0,0);
 
-// TEST MODE (false = direct open)
+/* TEST MODE */
 if(false){
     document.getElementById("locked").style.display="block";
     setInterval(updateTimer,1000);
