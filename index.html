@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Priyanka 🎂</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family:'Segoe UI',sans-serif;
+    text-align:center;
+    overflow:hidden;
+}
+
+.box{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    width:340px;
+    box-shadow:0 20px 45px rgba(0,0,0,0.25);
+    z-index:2;
+}
+
+h1{color:#ff3b6f;}
+
+#locked,#secret{
+    display:none;
+    font-size:16px;
+    color:#333;
+    line-height:1.6;
+}
+
+.countdown{
+    font-weight:bold;
+    color:#ff3b6f;
+}
+
+audio{margin-top:10px;width:100%;}
+
+.fade-end{
+    margin-top:18px;
+    font-size:14px;
+    color:#777;
+    opacity:0;
+    animation:fadeEnd 4s ease forwards;
+    animation-delay:6s;
+}
+
+@keyframes fadeEnd{
+    to{opacity:1;}
+}
+
+/* floating hearts */
+.heart{
+    position:absolute;
+    bottom:-20px;
+    font-size:18px;
+    animation:float 8s linear infinite;
+    opacity:0.6;
+}
+
+@keyframes float{
+    from{transform:translateY(0);}
+    to{transform:translateY(-110vh);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h1>Happy Birthday Priyanka 🎉</h1>
+
+    <div id="locked">
+        ⏳  
+        Ek chhota sa surprise  
+        <br>12:00 AM par unlock hoga  
+        <br><br>
+        <span class="countdown" id="timer"></span>
+    </div>
+
+    <div id="secret">
+        💖  
+        Priyanka,  
+        tum meri life ka wo hissa ho  
+        jo bina bole hi sab kuch samajh leta hai.  
+        <br><br>
+        Tum mere liye sirf aaj nahi,  
+        har din special ho. 🎂✨  
+
+        <br><br>
+        🎧 Ek baat sunni hai?
+        <br>
+        <audio controls>
+            <source src="voice.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="fade-end">
+            Kuch pal… sirf tumhare liye 💫
+        </div>
+    </div>
+</div>
+
+<script>
+const now=new Date();
+const unlockTime=new Date();
+unlockTime.setHours(24,0,0,0);
+
+if(now<unlockTime){
+    document.getElementById("locked").style.display="block";
+    setInterval(updateTimer,1000);
+}else{
+    unlock();
+}
+
+function updateTimer(){
+    const diff=unlockTime-new Date();
+    if(diff<=0){unlock();return;}
+    const h=Math.floor(diff/1000/60/60);
+    const m=Math.floor(diff/1000/60)%60;
+    const s=Math.floor(diff/1000)%60;
+    document.getElementById("timer").innerText=
+        `${h}h ${m}m ${s}s`;
+}
+
+function unlock(){
+    document.getElementById("locked").style.display="none";
+    document.getElementById("secret").style.display="block";
+    launchHearts();
+}
+
+function launchHearts(){
+    for(let i=0;i<15;i++){
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerText="💖";
+        h.style.left=Math.random()*100+"vw";
+        h.style.animationDuration=(6+Math.random()*4)+"s";
+        document.body.appendChild(h);
+    }
+}
+</script>
+
+</body>
+</html>
