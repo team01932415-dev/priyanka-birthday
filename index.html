@@ -29,7 +29,6 @@ body{
     height:100%;
     object-fit:cover;
     z-index:-3;
-    animation:videoDrift 30s linear infinite alternate;
 }
 
 /* OVERLAY */
@@ -76,6 +75,13 @@ h1{
     line-height:1.6;
 }
 
+.countdown{
+    margin-top:10px;
+    font-size:1.1rem;
+    font-weight:600;
+    color:#ff3b6f;
+}
+
 audio{width:100%;margin-top:10px}
 
 .listen{
@@ -106,13 +112,8 @@ audio{width:100%;margin-top:10px}
     animation:float 8s linear infinite;
 }
 
-/* ANIMATIONS */
 @keyframes float{to{transform:translateY(-120vh)}}
 @keyframes fadeEnd{to{opacity:1}}
-@keyframes videoDrift{
-    from{transform:scale(1)}
-    to{transform:scale(1.05)}
-}
 </style>
 </head>
 
@@ -129,6 +130,13 @@ audio{width:100%;margin-top:10px}
     <h1>Happy Birthday Priyanka 🎉</h1>
     <div class="sub">Just something… made with heart</div>
 
+    <!-- LOCKED -->
+    <div id="locked">
+        ⏳ Ek chhota sa surprise  
+        <div class="countdown" id="timer"></div>
+    </div>
+
+    <!-- UNLOCKED -->
     <div id="secret">
         <div class="message">
             💖 Priyanka,<br>
@@ -155,16 +163,40 @@ audio{width:100%;margin-top:10px}
 </div>
 
 <script>
-/* SHOW CONTENT */
-unlock();
+/* MIDNIGHT UNLOCK (LOCAL TIME) */
+const unlockTime = new Date();
+unlockTime.setHours(24,0,0,0);
+
+const locked = document.getElementById("locked");
+const secret = document.getElementById("secret");
+const timerEl = document.getElementById("timer");
+
+function update(){
+    const now = new Date();
+    const diff = unlockTime - now;
+
+    if(diff <= 0){
+        unlock();
+        return;
+    }
+
+    locked.style.display = "block";
+    secret.style.display = "none";
+
+    const h = Math.floor(diff/1000/60/60);
+    const m = Math.floor(diff/1000/60)%60;
+    const s = Math.floor(diff/1000)%60;
+    timerEl.innerText = `${h}h ${m}m ${s}s`;
+}
 
 function unlock(){
-    document.getElementById("secret").style.display="block";
+    locked.style.display = "none";
+    secret.style.display = "block";
     launchHearts();
     bindAudio();
 }
 
-/* BACKGROUND MUSIC FIX (AUTOPLAY SAFE) */
+/* AUDIO LOGIC */
 function bindAudio(){
     const voice = document.getElementById("voice");
     const bg = document.getElementById("bgMusic");
@@ -172,12 +204,10 @@ function bindAudio(){
     bg.volume = 0.18;
     voice.volume = 1.0;
 
-    // background music starts ONLY when voice is played
     voice.addEventListener("play",()=>{
         bg.play().catch(()=>{});
     });
 
-    // smooth fade when voice ends
     voice.addEventListener("ended",()=>{
         let fade=setInterval(()=>{
             if(bg.volume>0.02){
@@ -201,6 +231,10 @@ function launchHearts(){
         document.body.appendChild(h);
     }
 }
+
+/* INIT */
+update();
+setInterval(update,1000);
 </script>
 
 </body>
