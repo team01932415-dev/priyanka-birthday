@@ -5,25 +5,59 @@
 <title>For Priyanka 🎂</title>
 
 <style>
+/* Base */
 body{
     margin:0;
     height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    font-family:'Segoe UI',sans-serif;
+    font-family:'Segoe UI', sans-serif;
     text-align:center;
     overflow:hidden;
 }
 
+/* Background video */
+.bg-video{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-2;
+}
+
+/* Soft dark overlay on video */
+.video-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.35); /* softness control */
+    z-index:-1;
+}
+
+/* Glassmorphism content box */
 .box{
-    background:white;
+    position:relative;
     padding:30px;
-    border-radius:18px;
     width:340px;
-    box-shadow:0 20px 45px rgba(0,0,0,0.25);
-    z-index:2;
+    border-radius:18px;
+
+    /* glass look */
+    background:
+      linear-gradient(
+        rgba(255,255,255,0.35),
+        rgba(255,255,255,0.35)
+      ),
+      url("card-bg.jpg");
+    background-size:cover;
+    background-position:center;
+
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+
+    border:1px solid rgba(255,255,255,0.35);
+    box-shadow:0 25px 55px rgba(0,0,0,0.45);
+    z-index:1;
 }
 
 h1{color:#ff3b6f;}
@@ -31,7 +65,7 @@ h1{color:#ff3b6f;}
 #locked,#secret{
     display:none;
     font-size:16px;
-    color:#333;
+    color:#222;
     line-height:1.6;
 }
 
@@ -40,12 +74,15 @@ h1{color:#ff3b6f;}
     color:#ff3b6f;
 }
 
-audio{margin-top:10px;width:100%;}
+audio{
+    margin-top:10px;
+    width:100%;
+}
 
 .fade-end{
     margin-top:18px;
     font-size:14px;
-    color:#777;
+    color:#555;
     opacity:0;
     animation:fadeEnd 4s ease forwards;
     animation-delay:6s;
@@ -55,13 +92,13 @@ audio{margin-top:10px;width:100%;}
     to{opacity:1;}
 }
 
-/* floating hearts */
+/* Floating hearts */
 .heart{
     position:absolute;
     bottom:-20px;
     font-size:18px;
     animation:float 8s linear infinite;
-    opacity:0.6;
+    opacity:0.7;
 }
 
 @keyframes float{
@@ -73,6 +110,15 @@ audio{margin-top:10px;width:100%;}
 
 <body>
 
+<!-- Background Video -->
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="VID_20251218_101551_080 (1).mp4" type="video/mp4">
+</video>
+
+<!-- Dark Overlay -->
+<div class="video-overlay"></div>
+
+<!-- Content -->
 <div class="box">
     <h1>Happy Birthday Priyanka 🎉</h1>
 
@@ -86,7 +132,7 @@ audio{margin-top:10px;width:100%;}
 
     <div id="secret">
         💖  
-        Priyanka,  
+        Priyanka,<br>
         tum meri life ka wo hissa ho  
         jo bina bole hi sab kuch samajh leta hai.  
         <br><br>
@@ -111,6 +157,7 @@ const now=new Date();
 const unlockTime=new Date();
 unlockTime.setHours(24,0,0,0);
 
+// TEST MODE (false = direct open)
 if(false){
     document.getElementById("locked").style.display="block";
     setInterval(updateTimer,1000);
@@ -124,8 +171,7 @@ function updateTimer(){
     const h=Math.floor(diff/1000/60/60);
     const m=Math.floor(diff/1000/60)%60;
     const s=Math.floor(diff/1000)%60;
-    document.getElementById("timer").innerText=
-        `${h}h ${m}m ${s}s`;
+    document.getElementById("timer").innerText=`${h}h ${m}m ${s}s`;
 }
 
 function unlock(){
