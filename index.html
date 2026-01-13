@@ -128,7 +128,7 @@ audio{
 
 <!-- BACKGROUND VIDEO -->
 <video class="bg-video" autoplay muted loop playsinline>
-  <source src="bg-video.mp4" type="video/mp4">
+  <source src="VID_20251218_101551_080 (1).mp4" type="video/mp4">
 </video>
 <div class="video-overlay"></div>
 
@@ -161,27 +161,28 @@ audio{
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded",()=>{
-    launchHearts();
-    bindAudio();
-});
+/* DIRECT OPEN */
+launchHearts();
+bindAudio();
 
-/* BACKGROUND MUSIC + VOICE */
+/* BACKGROUND MUSIC + VOICE (AUTOPLAY SAFE) */
 function bindAudio(){
-    const voice=document.getElementById("voice");
-    const bg=document.getElementById("bgMusic");
+    const voice = document.getElementById("voice");
+    const bg = document.getElementById("bgMusic");
 
-    bg.volume=0.18;
-    voice.volume=1.0;
+    bg.volume = 0.18;   // soft romantic
+    voice.volume = 1.0;
 
+    // start background music when voice starts
     voice.addEventListener("play",()=>{
         bg.play().catch(()=>{});
     });
 
+    // fade out music when voice ends
     voice.addEventListener("ended",()=>{
-        let fade=setInterval(()=>{
-            if(bg.volume>0.02){
-                bg.volume-=0.02;
+        let fade = setInterval(()=>{
+            if(bg.volume > 0.02){
+                bg.volume -= 0.02;
             }else{
                 bg.pause();
                 clearInterval(fade);
