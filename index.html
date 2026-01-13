@@ -66,9 +66,10 @@ h1{
     color:#ff3b6f;
 }
 
-.sub{font-size:.95rem;opacity:.85}
-
-#locked,#secret{display:none}
+.sub{
+    font-size:.95rem;
+    opacity:.85;
+}
 
 .message{
     margin-top:10px;
@@ -76,7 +77,10 @@ h1{
     line-height:1.6;
 }
 
-audio{width:100%;margin-top:10px}
+audio{
+    width:100%;
+    margin-top:10px;
+}
 
 .listen{
     margin-top:8px;
@@ -107,8 +111,12 @@ audio{width:100%;margin-top:10px}
 }
 
 /* ANIMATIONS */
-@keyframes float{to{transform:translateY(-120vh)}}
-@keyframes fadeEnd{to{opacity:1}}
+@keyframes float{
+    to{transform:translateY(-120vh)}
+}
+@keyframes fadeEnd{
+    to{opacity:1}
+}
 @keyframes videoDrift{
     from{transform:scale(1)}
     to{transform:scale(1.05)}
@@ -129,59 +137,52 @@ audio{width:100%;margin-top:10px}
     <h1>Happy Birthday Priyanka 🎉</h1>
     <div class="sub">Just something… made with heart</div>
 
-    <div id="secret">
-        <div class="message">
-            💖 Priyanka,<br>
-            tum meri life ka wo hissa ho<br>
-            jo bina bole hi sab kuch samajh leta hai.<br><br>
-            Tum mere liye sirf aaj nahi,<br>
-            har din special ho. 🎂✨
-        </div>
-
-        <div class="listen">🎧 Suno…</div>
-
-        <!-- VOICE -->
-        <audio id="voice" controls>
-            <source src="voice.mp3" type="audio/mpeg">
-        </audio>
-
-        <!-- BACKGROUND MUSIC -->
-        <audio id="bgMusic" loop playsinline preload="auto">
-            <source src="background.mp3" type="audio/mpeg">
-        </audio>
-
-        <div class="fade-end">Kuch pal… sirf tumhare liye 💫</div>
+    <div class="message">
+        💖 Priyanka,<br>
+        tum meri life ka wo hissa ho<br>
+        jo bina bole hi sab kuch samajh leta hai.<br><br>
+        Tum mere liye sirf aaj nahi,<br>
+        har din special ho. 🎂✨
     </div>
+
+    <div class="listen">🎧 Suno…</div>
+
+    <!-- VOICE -->
+    <audio id="voice" controls>
+        <source src="voice.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- BACKGROUND MUSIC -->
+    <audio id="bgMusic" loop playsinline preload="auto">
+        <source src="background.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="fade-end">Kuch pal… sirf tumhare liye 💫</div>
 </div>
 
 <script>
-/* SHOW CONTENT */
-unlock();
+/* DIRECT OPEN */
+launchHearts();
+bindAudio();
 
-function unlock(){
-    document.getElementById("secret").style.display="block";
-    launchHearts();
-    bindAudio();
-}
-
-/* BACKGROUND MUSIC FIX (AUTOPLAY SAFE) */
+/* BACKGROUND MUSIC + VOICE (AUTOPLAY SAFE) */
 function bindAudio(){
     const voice = document.getElementById("voice");
     const bg = document.getElementById("bgMusic");
 
-    bg.volume = 0.18;
+    bg.volume = 0.18;   // soft romantic
     voice.volume = 1.0;
 
-    // background music starts ONLY when voice is played
+    // start background music when voice starts
     voice.addEventListener("play",()=>{
         bg.play().catch(()=>{});
     });
 
-    // smooth fade when voice ends
+    // fade out music when voice ends
     voice.addEventListener("ended",()=>{
-        let fade=setInterval(()=>{
-            if(bg.volume>0.02){
-                bg.volume-=0.02;
+        let fade = setInterval(()=>{
+            if(bg.volume > 0.02){
+                bg.volume -= 0.02;
             }else{
                 bg.pause();
                 clearInterval(fade);
