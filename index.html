@@ -32,7 +32,7 @@ body{
     animation:videoDrift 30s linear infinite alternate;
 }
 
-/* CINEMATIC OVERLAY */
+/* OVERLAY */
 .video-overlay{
     position:fixed;
     inset:0;
@@ -42,7 +42,7 @@ body{
     z-index:-2;
 }
 
-/* GLASS CARD */
+/* CARD */
 .card{
     position:relative;
     width:360px;
@@ -57,15 +57,13 @@ body{
     backdrop-filter: blur(14px) saturate(120%);
     border:1px solid rgba(255,255,255,.35);
     box-shadow:0 30px 70px rgba(0,0,0,.45);
-    animation:slowZoom 22s ease-in-out infinite alternate;
 }
 
-/* TITLE */
+/* TEXT */
 h1{
     margin:0 0 8px;
     font-size:1.6rem;
     color:#ff3b6f;
-    animation:heartbeat 2.2s ease-in-out infinite;
 }
 
 .sub{font-size:.95rem;opacity:.85}
@@ -90,22 +88,13 @@ audio{width:100%;margin-top:10px}
     font-weight:600;
 }
 
-.spark{
-    margin-top:10px;
-    font-size:.85rem;
-    color:#444;
-    opacity:0;
-    animation:sparkFade 3s ease forwards;
-    animation-delay:7s;
-}
-
 .fade-end{
     margin-top:12px;
     font-size:.85rem;
     color:#555;
     opacity:0;
     animation:fadeEnd 4s ease forwards;
-    animation-delay:10s;
+    animation-delay:8s;
 }
 
 /* HEARTS */
@@ -118,22 +107,11 @@ audio{width:100%;margin-top:10px}
 }
 
 /* ANIMATIONS */
-@keyframes heartbeat{
-    0%,100%{transform:scale(1)}
-    14%{transform:scale(1.08)}
-    28%{transform:scale(1)}
-    42%{transform:scale(1.08)}
-}
-@keyframes slowZoom{
-    from{background-size:120%}
-    to{background-size:135%}
-}
-@keyframes fadeEnd{to{opacity:1}}
-@keyframes sparkFade{to{opacity:1}}
 @keyframes float{to{transform:translateY(-120vh)}}
+@keyframes fadeEnd{to{opacity:1}}
 @keyframes videoDrift{
-    from{transform:scale(1) translateX(0)}
-    to{transform:scale(1.05) translateX(-20px)}
+    from{transform:scale(1)}
+    to{transform:scale(1.05)}
 }
 </style>
 </head>
@@ -168,36 +146,38 @@ audio{width:100%;margin-top:10px}
         </audio>
 
         <!-- BACKGROUND MUSIC -->
-        <audio id="bgMusic" loop>
+        <audio id="bgMusic" loop playsinline preload="auto">
             <source src="background.mp3" type="audio/mpeg">
         </audio>
 
-        <div class="spark">Some moments don’t need words…</div>
         <div class="fade-end">Kuch pal… sirf tumhare liye 💫</div>
     </div>
 </div>
 
 <script>
-/* AUTO UNLOCK */
+/* SHOW CONTENT */
 unlock();
 
-/* PLAY VOICE + BACKGROUND MUSIC */
 function unlock(){
     document.getElementById("secret").style.display="block";
     launchHearts();
-    autoPlayAudio();
+    bindAudio();
 }
 
-function autoPlayAudio(){
-    const voice=document.getElementById("voice");
-    const bg=document.getElementById("bgMusic");
+/* BACKGROUND MUSIC FIX (AUTOPLAY SAFE) */
+function bindAudio(){
+    const voice = document.getElementById("voice");
+    const bg = document.getElementById("bgMusic");
 
-    bg.volume=0.18;      // romantic & soft
-    voice.volume=1.0;   // clear voice
+    bg.volume = 0.18;
+    voice.volume = 1.0;
 
-    bg.play().catch(()=>{});
-    voice.play().catch(()=>{});
+    // background music starts ONLY when voice is played
+    voice.addEventListener("play",()=>{
+        bg.play().catch(()=>{});
+    });
 
+    // smooth fade when voice ends
     voice.addEventListener("ended",()=>{
         let fade=setInterval(()=>{
             if(bg.volume>0.02){
@@ -221,11 +201,6 @@ function launchHearts(){
         document.body.appendChild(h);
     }
 }
-
-/* EXIT LINE */
-window.addEventListener("beforeunload",()=>{
-    return "Come back anytime 💗";
-});
 </script>
 
 </body>
